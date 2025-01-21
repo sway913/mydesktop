@@ -17,9 +17,13 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"],
+      "~/*": ["electron/*"],
+      "common/*": ["electron/common/*"],
+      "main/*": ["electron/main/*"],
+      "types/*": ["electron/types/*"],
+      "app/*": ["electron/app/*"],
+      "api-types/*": ["electron/api-types/*"]
     },
   },
   "include": ["src", "electron"],

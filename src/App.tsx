@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import UpdateElectron from '@/components/update'
 import logoVite from './assets/logo-vite.svg'
 import logoElectron from './assets/logo-electron.svg'
 import './App.css'
@@ -14,7 +13,7 @@ function App() {
           <img src={logoElectron} className='logo electron' alt='Electron + Vite logo' />
         </a>
       </div>
-      <h1>Electron + Vite + React</h1>
+      <h1>electron demo</h1>
       <div className='card'>
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -29,8 +28,6 @@ function App() {
       <div className='flex-center'>
         Place static files into the<code>/public</code> folder <img style={{ width: '5em' }} src='./node.svg' alt='Node logo' />
       </div>
-
-      <UpdateElectron />
     </div>
   )
 }

@@ -33,6 +33,16 @@ export default defineConfig(({ command }) => {
             }
           },
           vite: {
+            resolve: {
+              alias: {
+                '~': path.join(__dirname, 'electron'),
+                'common': path.join(__dirname, 'electron/common'),
+                'main': path.join(__dirname, 'electron/main'),
+                'types': path.join(__dirname, 'electron/types'),
+                'app': path.join(__dirname, 'electron/app'),
+                'api-types': path.join(__dirname, 'electron/api-types'),
+              },
+            },
             build: {
               sourcemap,
               minify: isBuild,
