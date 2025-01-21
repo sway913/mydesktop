@@ -25,12 +25,16 @@ import {TAB_MESSAGING, type MattermostView} from 'common/views/View';
 import DeveloperMode from 'main/developerMode';
 import performanceMonitor from 'main/performanceMonitor';
 import {getServerAPI} from 'main/server/serverAPI';
+import { fileURLToPath } from 'node:url'
 import MainWindow from 'main/windows/mainWindow';
+import path from 'node:path'
 
 import WebContentsEventManager from './webContentEvents';
 
 import ContextMenu from '../contextMenu';
 import {getWindowBoundaries, getLocalPreload, composeUserAgent} from '../utils';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 enum Status {
     LOADING,
@@ -58,7 +62,8 @@ export class MattermostWebContentsView extends EventEmitter {
         super();
         this.view = view;
 
-        const preload = getLocalPreload('externalAPI.js');
+        const preload = path.join(__dirname, '../preload/index.mjs')
+        // const preload = getLocalPreload('index.js');
         this.options = Object.assign({}, options);
         this.options.webPreferences = {
             preload: DeveloperMode.get('browserOnly') ? undefined : preload,
