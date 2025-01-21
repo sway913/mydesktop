@@ -43,6 +43,8 @@ import {getLocalPreload, isInsideRectangle, isKDE} from '../utils';
 const log = new Logger('MainWindow');
 const ALT_MENU_KEYS = ['Alt+F', 'Alt+E', 'Alt+V', 'Alt+H', 'Alt+W', 'Alt+P'];
 
+export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
+
 export class MainWindow extends EventEmitter {
     private win?: BrowserWindow;
 
@@ -140,10 +142,15 @@ export class MainWindow extends EventEmitter {
 
         const localURL = 'mattermost-desktop://renderer/index.html';
         performanceMonitor.registerView('MainWindow', this.win.webContents);
-        this.win.loadURL(localURL).catch(
-            (reason) => {
+        if (VITE_DEV_SERVER_URL) {
+            this.win.loadURL(VITE_DEV_SERVER_URL).catch((reason) => {
                 log.error('failed to load', reason);
             });
+        } else {
+            this.win.loadURL(localURL).catch((reason) => {
+                log.error('failed to load', reason);
+            });
+        }
 
         this.emit(MAIN_WINDOW_CREATED);
     };

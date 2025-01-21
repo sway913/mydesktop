@@ -1,9 +1,15 @@
 import { rmSync } from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import { execSync } from 'child_process';
 import react from '@vitejs/plugin-react'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
+
+const VERSION = execSync('git rev-parse --short HEAD', { cwd: __dirname }).toString();
+const isTest = process.env.NODE_ENV === 'test';
+const isProduction = process.env.NODE_ENV === 'production';
+const isRelease = process.env.GITHUB_WORKFLOW && process.env.GITHUB_WORKFLOW.startsWith('release');
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
@@ -24,7 +30,7 @@ export default defineConfig(({ command }) => {
       electron({
         main: {
           // Shortcut of `build.lib.entry`
-          entry: 'electron/main/index.ts',
+          entry: 'electron/main/app/index.ts',
           onstart(args) {
             if (process.env.VSCODE_DEBUG) {
               console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
@@ -50,6 +56,15 @@ export default defineConfig(({ command }) => {
               rollupOptions: {
                 external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
               },
+            },
+            define: {
+              global: {},
+              __HASH_VERSION__: !isRelease && JSON.stringify(VERSION),
+              __CAN_UPGRADE__: isTest || JSON.stringify(process.env.CAN_UPGRADE === 'true'),
+              __IS_NIGHTLY_BUILD__: JSON.stringify(process.env.GITHUB_WORKFLOW && process.env.GITHUB_WORKFLOW.startsWith('nightly')),
+              __IS_MAC_APP_STORE__: JSON.stringify(process.env.IS_MAC_APP_STORE === 'true'),
+              __SKIP_ONBOARDING_SCREENS__: JSON.stringify(process.env.MM_DESKTOP_BUILD_SKIPONBOARDINGSCREENS === 'true'),
+              __DISABLE_GPU__: JSON.stringify(process.env.MM_DESKTOP_BUILD_DISABLEGPU === 'true'),
             },
           },
         },
