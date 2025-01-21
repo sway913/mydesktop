@@ -4,7 +4,7 @@
 import type {IpcRendererEvent} from 'electron';
 import {contextBridge, ipcRenderer, webFrame} from 'electron';
 
-import type {DesktopAPI} from '@mattermost/desktop-api';
+import type {DesktopAPI} from 'api-types/index';
 
 import {
     NOTIFY_MENTION,
