@@ -116,14 +116,14 @@ export async function initialize() {
 
     // initialization that can run before the app is ready
     initializeArgs();
-    // await initializeConfig();
+    await initializeConfig();
     initializeAppEventListeners();
-    // initializeBeforeAppReady();
+    initializeBeforeAppReady();
 
     // wait for registry config data to load and app ready event
     await Promise.all([
         app.whenReady(),
-        // Config.initRegistry(),
+        Config.initRegistry(),
     ]);
 
     // no need to continue initializing if app is quitting
@@ -215,7 +215,7 @@ function initializeBeforeAppReady() {
         return;
     }
     if (process.env.NODE_ENV !== 'test') {
-        app.enableSandbox();
+        // app.enableSandbox();
     }
     TrustedOriginsStore.load();
 

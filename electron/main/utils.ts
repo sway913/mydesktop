@@ -12,8 +12,10 @@ import type {BrowserWindow} from 'electron';
 import {app} from 'electron';
 
 import {TAB_BAR_HEIGHT} from 'common/utils/constants';
-
+import {fileURLToPath} from 'node:url'
 import type {Args} from 'types/args';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export function isInsideRectangle(container: Electron.Rectangle, rect: Electron.Rectangle) {
     if (container.x > rect.x) {
@@ -63,6 +65,10 @@ export function getAdjustedWindowBoundaries(width: number, height: number) {
 
 export function getLocalPreload(file: string) {
     return path.join(app.getAppPath(), file);
+}
+
+export function getCurrentPath(file: string): string {
+    return path.join(__dirname, file)
 }
 
 export function composeUserAgent(browserMode?: boolean) {
